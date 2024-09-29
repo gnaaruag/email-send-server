@@ -6,6 +6,10 @@ import random
 
 app = FastAPI()
 
+@app.get("/ping")
+def ping():
+    return {"message": "pong"}
+
 @app.get("/send-email")
 def send_email():
     sender = "gaurang40304@gmail.com"
