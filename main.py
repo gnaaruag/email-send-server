@@ -2,7 +2,9 @@ from fastapi import FastAPI
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-import random
+from dotenv import dotenv_values
+
+config = dotenv_values(".env")
 
 app = FastAPI()
 
@@ -12,21 +14,17 @@ def ping():
 
 @app.get("/send-email")
 def send_email():
-    sender = "gaurang40304@gmail.com"
-    recipient = "lumosnox1104@gmail.com"
-    subject = "Water Reminder"
-    body_options = [
-        "Drink water :) \n ily",
-        "Daisy Vyas, Water, NOW! \n ily",
-        "Paani peelo madam ji 🙏🏻. \n ily"
-        "Be a hydro homie \n ily :)",
-        "Don't forget to drink water! \n ily",
-        "Drink water, you thirsty hoe \n ily",
-        "Drink water, ily :) \n ily",
-        "Drink up princess \n ily"
-        
-    ]
-    body = random.choice(body_options)
+    sender = config["sender"]
+    recipient = config["reciever"]
+    # customize subject
+    subject = "Email Subject"
+    
+    body = "test email"
+    
+    """
+    - You can also get the email content from an input file/template engine\ and parametrize it to customize email content.
+    - generate an app password from your google account (will work only then)
+    """
     
     msg = MIMEMultipart()
     msg['From'] = sender
@@ -37,7 +35,7 @@ def send_email():
     try:
         server = smtplib.SMTP('smtp.gmail.com', 587)
         server.starttls()
-        server.login(sender, "rqst uphw fhkt crho")  # Use app-specific password if needed
+        server.login(sender, config["app_password"])  
         text = msg.as_string()
         server.sendmail(sender, recipient, text)
         server.quit()

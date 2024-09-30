@@ -1,2 +1,4 @@
 fastapi
 uvicorn
+email
+python-dotenv
